@@ -1,13 +1,16 @@
 package com.example.criticalroll;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
@@ -26,12 +29,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private Vibrator vibrator;
     private ImageView imageViewDice;
     private Random rng = new Random();
+    private TextView crits;
+    private SharedPreferences mPrefs;
+    private int randomNum;
+    MediaPlayer mediaPlayer;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        crits = findViewById(R.id.critical);
+        mediaPlayer = MediaPlayer.create(this, R.raw.dicerolling);
         //xTextView = findViewById(R.id.xTextView);
         //yTextView = findViewById(R.id.yTextView);
         //zTextview = findViewById(R.id.zTextView);
@@ -46,8 +56,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             xTextView.setText("Accelerometer sensor is not available.");
             isAccSenAvailable = false;
         }
-
         imageViewDice = findViewById(R.id.DicePic);
+
         imageViewDice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -57,25 +67,78 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     private void rollDice(){
-        int randomNum = rng.nextInt(6) + 1;
+        randomNum = rng.nextInt(20) + 1;
+        crits.setVisibility(TextView.INVISIBLE);
+        mediaPlayer = MediaPlayer.create(this,R.raw.dicerolling);
+        mediaPlayer.start();
         switch (randomNum){
             case 1:
-                imageViewDice.setImageResource(R.drawable.dice1);
+                imageViewDice.setImageResource(R.drawable.dicefaces1);
+                crits.setVisibility(TextView.VISIBLE);
+                mediaPlayer = MediaPlayer.create(this,R.raw.manlaughing);
+                mediaPlayer.start();
+                crits.setText(R.string.crit_miss);
                 break;
             case 2:
-                imageViewDice.setImageResource(R.drawable.dice2);
+                imageViewDice.setImageResource(R.drawable.dicefaces2);
                 break;
             case 3:
-                imageViewDice.setImageResource(R.drawable.dice3);
+                imageViewDice.setImageResource(R.drawable.dicefaces3);
                 break;
             case 4:
-                imageViewDice.setImageResource(R.drawable.dice4);
+                imageViewDice.setImageResource(R.drawable.dicefaces4);
                 break;
             case 5:
-                imageViewDice.setImageResource(R.drawable.dice5);
+                imageViewDice.setImageResource(R.drawable.dicefaces5);
                 break;
             case 6:
-                imageViewDice.setImageResource(R.drawable.dice6);
+                imageViewDice.setImageResource(R.drawable.dicefaces6);
+                break;
+            case 7:
+                imageViewDice.setImageResource(R.drawable.dicefaces7);
+                break;
+            case 8:
+                imageViewDice.setImageResource(R.drawable.dicefaces8);
+                break;
+            case 9:
+                imageViewDice.setImageResource(R.drawable.dicefaces9);
+                break;
+            case 10:
+                imageViewDice.setImageResource(R.drawable.dicefaces10);
+                break;
+            case 11:
+                imageViewDice.setImageResource(R.drawable.dicefaces11);
+                break;
+            case 12:
+                imageViewDice.setImageResource(R.drawable.dicefaces12);
+                break;
+            case 13:
+                imageViewDice.setImageResource(R.drawable.dicefaces13);
+                break;
+            case 14:
+                imageViewDice.setImageResource(R.drawable.dicefaces14);
+                break;
+            case 15:
+                imageViewDice.setImageResource(R.drawable.dicefaces15);
+                break;
+            case 16:
+                imageViewDice.setImageResource(R.drawable.dicefaces16);
+                break;
+            case 17:
+                imageViewDice.setImageResource(R.drawable.dicefaces17);
+                break;
+            case 18:
+                imageViewDice.setImageResource(R.drawable.dicefaces18);
+                break;
+            case 19:
+                imageViewDice.setImageResource(R.drawable.dicefaces19);
+                break;
+            case 20:
+                imageViewDice.setImageResource(R.drawable.dicefaces20);
+                crits.setVisibility(TextView.VISIBLE);
+                mediaPlayer = MediaPlayer.create(this,R.raw.success);
+                mediaPlayer.start();
+                crits.setText(R.string.crit_hit);
                 break;
         }
     }
@@ -117,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onResume() {
         super.onResume();
-
+        rollDice();
         if(isAccSenAvailable){
             sensorManager.registerListener(this,accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
         }
