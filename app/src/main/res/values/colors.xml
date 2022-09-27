@@ -10,4 +10,7 @@
     <color name="red">#ff20</color>
     <color name="green">#ff03da00</color>
     <color name="grey_bg">#FF464646</color>
+    <color name="maroon">#581845</color>
+    <color name="pastel_purple">#C9AAD6</color>
+    <color name="dull_dark_purple">#4B3952</color>
 </resources>

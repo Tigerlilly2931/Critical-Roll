@@ -14,6 +14,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -61,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         imageViewDice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.dicerolling);
+                mediaPlayer.start();
                 rollDice();
             }
         });
@@ -68,9 +71,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private void rollDice(){
         randomNum = rng.nextInt(20) + 1;
+
         crits.setVisibility(TextView.INVISIBLE);
-        mediaPlayer = MediaPlayer.create(this,R.raw.dicerolling);
-        mediaPlayer.start();
+        //mediaPlayer = MediaPlayer.create(this,R.raw.dicerolling);
+        //mediaPlayer.start();
         switch (randomNum){
             case 1:
                 imageViewDice.setImageResource(R.drawable.dicefaces1);
@@ -78,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 mediaPlayer = MediaPlayer.create(this,R.raw.manlaughing);
                 mediaPlayer.start();
                 crits.setText(R.string.crit_miss);
+                crits.setTextColor(getColor(R.color.red));
                 break;
             case 2:
                 imageViewDice.setImageResource(R.drawable.dicefaces2);
@@ -139,6 +144,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 mediaPlayer = MediaPlayer.create(this,R.raw.success);
                 mediaPlayer.start();
                 crits.setText(R.string.crit_hit);
+                crits.setTextColor(getColor(R.color.green));
                 break;
         }
     }
@@ -162,6 +168,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
             if((xDiff > shakeThresh && yDiff > shakeThresh) || (xDiff > shakeThresh && zDiff > shakeThresh) || (zDiff > shakeThresh && yDiff > shakeThresh)){
                 vibrator.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
+                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.dicerolling2);
+                mediaPlayer.start();
                 rollDice();
             }
         }
